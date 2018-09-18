@@ -1,0 +1,169 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger REST Article
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+# Paths supported by the server application
+paths:
+  /index/generate:
+    post:
+      operationId: webapi.index.generate
+      tags:
+        - Index
+      summary: Index
+      description: Index
+      responses:
+        200:
+          description: Successfully created the index
+          schema:
+            type: array
+            items:
+              type: string
+  /artist:
+    get:
+      operationId: webapi.artist.read_all
+      tags:
+        - Artist
+      summary: List all artists in the index
+      description: List all artists
+      responses:
+        200:
+          description: Successfully retrieved artist list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Artist'
+  /artist/{artist_id}:
+    get:
+      parameters:
+        - name: artist_id
+          description: Name of the artist
+          type: integer
+          in: path
+          required: true
+      operationId: webapi.artist.read
+      tags:
+        - Artist
+      summary: Lists a specific artist from the index
+      description: List a specific artist
+      responses:
+        200:
+          description: Successfully retrieved artist
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Artist'
+  /record:
+    get:
+      operationId: webapi.record.read_all
+      tags:
+        - Record
+      summary: List all records in the index
+      description: List all records
+      responses:
+        200:
+          description: Successfully retrieved all records
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Record'
+  /title:
+    get:
+      operationId: webapi.title.read_all
+      tags:
+        - Title
+      summary: List all titles in the index
+      description: List all titles
+      responses:
+        200:
+          description: Successfully retrieved titles
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Title'
+  /title/{title_id}/play:
+    post:
+      parameters:
+        - name: title_id
+          description: Id of the title
+          type: string
+          in: path
+          required: true
+      operationId: webapi.title.play
+      tags:
+        - Title
+      summary: Plays the title
+      description: Plays the title
+      responses:
+        200:
+          description: Successfully retrieved titles
+  /title/{title_id}/enqueue:
+    post:
+      parameters:
+        - name: title_id
+          description: Id of the title
+          type: string
+          in: path
+          required: true
+      operationId: webapi.title.enqueue
+      tags:
+        - Title
+      summary: Enqueue the title
+      description: Enqueue the title
+      responses:
+        200:
+          description: Successfully retrieved titles
+  /player/status:
+    get:
+      operationId: webapi.player.status
+      tags:
+        - Player
+      summary: Returns the status of the player and played song
+      description: Returns the status of the player and played song
+      responses:
+        200:
+          description: Successfully retrieved titles
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Status'
+definitions:
+  Artist:
+    properties:
+      name:
+        type: string
+  Record:
+    properties:
+      name:
+        type: string
+      year:
+        type: integer
+      length:
+        type: number
+      image:
+        type: string
+      artist:
+        type: object
+        items:
+          properties:
+            name:
+              type: string
+            artist_id:
+              type: string
+  Title:
+    properties:
+      record:
+        type: string
+      album:
+        type: string
+  Status:
+    properties:
+      title:
+        type: string
